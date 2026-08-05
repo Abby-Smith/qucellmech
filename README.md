@@ -9,12 +9,15 @@ A QuPath extension that integrates Cellpose (automated cell segmentation) and Py
 #### Step I: Pycellmech
 1. Clone this repository into a ```BASE_DIR``` of your choice.
 2. Create and activate a virtual environment in the ```BASE_DIR``` where you installed the repository.
-3. Run ```pip install BASE_DIR/qucellmech/pycellmech.```
+3. In the terminal, run ```pip install BASE_DIR/qucellmech/pycellmech.```
 
 #### Step II: QuPath
-4. In the repository folder, locate ```BASE_DIR/qucellmech/qupath-extension-qucellmech/build/libs/qupath-extension-qucellmech-0.1.0.jar```
-5. Drag the jar file into an open window of QuPath.
-6. Restart QuPath and open a project file (with images inside, ideally TIF). Click ```Extensions > QuCellMech > Run for project```, and customize the prompts to run the pipeline!
+4. In terminal, change directories to the extension folder and build the extension:
+   ```cd BASE_DIR/qucellmech/qupath-extension-qucellmech```
+   ``` ./gradlew build```
+5. In your local file system, locate ```BASE_DIR/qucellmech/qupath-extension-qucellmech/build/libs/qupath-extension-qucellmech-0.1.0.jar```
+6. Drag the jar file into an open window of QuPath.
+7. Restart QuPath and open a project file (with images inside, ideally TIF). Click ```Extensions > QuCellMech > Run for project```, and customize the prompts to run the pipeline!
 
 ## Input:
 - Path to Pycellmech executable (```BASE_DIR/YOUR_VENV/bin/pycellmech```)
