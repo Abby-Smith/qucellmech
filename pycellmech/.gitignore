@@ -1,0 +1,5 @@
+# Ignore egg info when uploading to GitHub
+pycellmech.egg-info
+
+# Ignore pycache
+__pycache__
