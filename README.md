@@ -4,6 +4,7 @@ A QuPath extension that integrates Cellpose (automated cell segmentation) and Py
 ## Prerequesites:
 - QuPath project containing images of cells to analyse (TIF works best)
 - Either Cellpose installed as QuPath extension (see https://github.com/BIOP/qupath-extension-cellpose), or GeoJSON files containing cell detections for each image
+     - Note: if you are importing GeoJSON files, each one must start with the same file name as its TIF counterpart. You will also need a column in the GeoJSON containing a unique object ID for each detection/annotation. If your GeoJSON files do not have these properties, before running the extension you can open them in QuPath and export them in the proper format using ```File > Export objects as GeoJSON```.
 
 ## Installation:
 #### Step I: Pycellmech
