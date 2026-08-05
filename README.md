@@ -59,65 +59,65 @@ these feature descriptions are found below. Features in **bold** are included in
 : This function finds the angle of the tangent at each point in the contour based on the previous point. Output for each cell is a list of numpy floats between -2pi and 2pi.
 
 
-*Curvature*
+- *Curvature*
 : This function uses x and y gradients at each point in the contour to calculate curvature, outputting a list of numpy floats for each cell.
 
 
-*Area Function (AF)*
+- *Area Function (AF)*
 : For each point in a contour, AF creates a triangle between that point, the following point, and the centroid, then calculates the area of this triangle. For each cell, the output is a list of numpy floats, representing one area per point.
 
 
-*Triangle Area Representation (TAR)*
+- *Triangle Area Representation (TAR)*
 : TAR calculates the area of the triangle formed by three successive points, for each point in a contour. Outputs a list of numpy floats (one per point) for each cell.
 
 
-*Chord Length Function (CLF)*
+- *Chord Length Function (CLF)*
 : CLF measures the distances between pairs of points on the shape's boundary. The output for each cell is a list of numpy floats.
 
 -----------------------------------------------------------------------------------------------------------
 ### Geometric Shape Features: properties of the whole cell shape
 
-***Average Bending Energy (ABE)***
+- ***Average Bending Energy (ABE)***
 : ABE quantifies the mean amount of effort required to deform the shape. For each cell, ABE is calculated as the average curvature over all points in a contour. Output is a scalar value.
 
 
-***Eccentricity***
+- ***Eccentricity***
 : Eccentricity describes the degree to which a shape deviates from being circular. Output is a scalar between 0 (circle) and 1 (most elliptical).
 
 
-***Minimum Bounding Rectangle (MBR)***
+- ***Minimum Bounding Rectangle (MBR)***
 : MBR represents the smallest rectangle that entirely encloses the shape, representing its rectilinear approximation. Feature outputs are scalars including rectangle width, height, angle, eccentricity ```(E = height/width)```, and elongation.
 
 
-***Circularity Ratio (CR)***
+- ***Circularity Ratio (CR)***
 : CR compares the area of the shape to the area of a circle with the same perimeter/circumference. Output is a scalar for each cell.
 
 
-***Ellipse Variance and Moment Invariants (EM and EV)***
+- ***Ellipse Variance and Moment Invariants (EM and EV)***
 : EV measures the deviation of a shape from an elliptical form, and EM quantifies shape characteristics that remain constant under transformations (e.g., rotation, scaling, and translation).
 
 
-***Solidity***
+- ***Solidity***
 : Solidity calculates the ratio of the shape's area to the area of its convex hull. The convex hull is like wrapping cell in film: if we draw a line segment between any two points in the cell, that line will still be in the hull. Output for each cell is a scalar between 0 and 1.
 
 -----------------------------------------------------------------------------------------------------------
 ### Polygonal Approximation Shape Features: simplifying each cell to a polygon
 
-*Distance Threshold Method (DTM)*
+- *Distance Threshold Method (DTM)*
 : DTM involves setting a specific distance limit to differentiate between relevant and irrelevant points. DTM simplifies the contour of each cell into longer line segments between fewer points. Output for each cell is a list of two-dimensional arrays, representing the start and end points of each line segment.
 
 
-*Polygon Evolution by Vertex Deletion (PEVD)*
+- *Polygon Evolution by Vertex Deletion (PEVD)*
 : PEVD is a process where vertices are incrementally removed from a polygonal shape to simplify its structure while trying to preserve its overall form and characteristics. Output is a list of two-dimensional arrays, representing the points of the final polygon.
 
 
-*Splitting Method (SM)*
+- *Splitting Method (SM)*
 : SM involves dividing a shape into smaller, manageable segments or components. Output for each cell is a list of (x,y) endpoints of each small segment.
 
 
-*Minimum Perimeter Polygon (MPP)*
+- *Minimum Perimeter Polygon (MPP)*
 : MPP is the polygon with the smallest possible perimeter that can enclose a given shape. This algorithm labels each point as concave or convex, then uses this information to construct a simplified, smaller polygon for each cell. Output is a list of 2D arrays representing the polygon's vertices.
 
 
-*K-Means Method*
+- *K-Means Method*
 : KMeans clusters points on the shape into a specified number of groups based on their proximity. Outputs include the following arrays for each cell: KMCC (K-means cluster centers), KMLS (K-means line segments), and labels (the number of the cluster assigned to each vertex in the polygon).
