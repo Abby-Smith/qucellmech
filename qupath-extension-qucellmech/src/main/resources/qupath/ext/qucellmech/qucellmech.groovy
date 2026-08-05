@@ -301,6 +301,11 @@ print("Wiped temp GeoJSON folder")
 
 // Finally, we want to use this command to process the geojson files and display their pycellmech measurements in QuPath
 
+// Helper: normalize a header name for flexible matching (strips underscores/spaces/hyphens, lowercases)
+// e.g. "object_ID", "objectID", "Object-Id" -> "objectid"; "ID", "id" -> "id"
+
+def normalizeHeader = { String h -> h.toLowerCase().replaceAll(/[^a-z0-9]/, "") }
+
 for (entry in project.getImageList().findAll { selectedImageNames.contains(it.getImageName()) }) {
     // create CSV file with only scalar-value features, corresponding to GeoJSON file (imageName)
     def imageData = entry.readImageData()
@@ -317,33 +322,53 @@ for (entry in project.getImageList().findAll { selectedImageNames.contains(it.ge
     // define image hierarchy (to be used later when displaying feature calculations)
     def hierarchy = imageData.getHierarchy()
     def headers = null
-    
+    def idColumnIndex = -1
+
     // debug
     print("Reading CSV: " + csvFile.absolutePath)
     print("Number of detections found: " + detections.size())
-    
+
     csvFile.eachLine { line, lineNumber ->
         // first line in CSV is the header, all subsequent lines have an object ID that we can access by index
         if (lineNumber == 1) {
             headers = line.split(",")
             println(headers)
+
+            // Find the ID column, tolerating variations like object_id, object_ID,
+            // objectID, id, ID, Object-Id, etc.
+            idColumnIndex = headers.findIndexOf { h ->
+                def norm = normalizeHeader(h)
+                norm == "objectid" || norm == "id"
+            }
+
+            if (idColumnIndex == -1) {
+                print("ERROR: could not find an object ID column in CSV headers: " + headers.join(", "))
+            } else {
+                println("Using column '${headers[idColumnIndex]}' (index ${idColumnIndex}) as the object ID column")
+            }
         } else {
+            if (idColumnIndex == -1) {
+                // No valid ID column found - skip processing this file entirely
+                return
+            }
+
             def values = line.split(",")
-            def objectId = values[headers.findIndexOf { it == "object_id" }]
+            def objectId = values[idColumnIndex]
+
             def detection = detections.find { it.getID().toString() == objectId }
-            
+
             // debug
             if (detection == null) {
                 print("No match found for object_id: " + objectId)
             }
-            
+
             // if the object ID is associated with a detection, get pycellmech measurements
             if (detection != null) {
                 def ml = detection.getMeasurementList()
                 headers.eachWithIndex { header, i ->
-                    if (header != "object_id") {
+                    if (i != idColumnIndex) {
                         try {
-                            // show results from pycellmech-generated CSV for all columns except the object ID 
+                            // show results from pycellmech-generated CSV for all columns except the object ID
                             ml.put(header, Double.parseDouble(values[i]))
                         } catch (NumberFormatException e) {}
                     }
@@ -357,6 +382,6 @@ for (entry in project.getImageList().findAll { selectedImageNames.contains(it.ge
     imageData.getServer().close()
     imageData = null
     System.gc()
-    
+
     print("Measurements added for: " + imageName)
 }
