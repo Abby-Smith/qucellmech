@@ -12,7 +12,7 @@ A QuPath extension that integrates Cellpose (automated cell segmentation) and Py
 3. In the terminal, run ```pip install BASE_DIR/qucellmech/pycellmech.```
 
 #### Step II: QuPath
-4. In terminal, change directories to the extension folder and build the extension:
+4. In terminal, change directories to the extension folder and build the extension:  
    ```cd BASE_DIR/qucellmech/qupath-extension-qucellmech```  
    ``` ./gradlew build```
 6. In your local file system, locate ```BASE_DIR/qucellmech/qupath-extension-qucellmech/build/libs/qupath-extension-qucellmech-0.1.0.jar```
