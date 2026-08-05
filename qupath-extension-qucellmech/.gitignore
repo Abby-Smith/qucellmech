@@ -1,0 +1,36 @@
+# Maven
+deploy/
+target/
+log/
+data/
+
+# IDE
+.idea/
+*.iml
+out/
+.vscode/
+
+# Gradle - use local properties (e.g. to set a specific JDK, should be newer)
+build/
+.gradle/
+.app/
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# Mac
+.DS_Store
+
+# Java
+hs_err*.log
+
+# Other
+*.tmp
+*.bak
+*.swp
+*~.nib
+*thumbs.db
+bin/
+/data/
