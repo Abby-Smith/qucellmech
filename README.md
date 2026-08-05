@@ -43,19 +43,19 @@ these feature descriptions are found below. Features in **bold** are included in
 
 ### One-Dimensional Function Shape Features: quantifying every point in the cell contour
 
-***Centroid***
+- ***Centroid***
 : The center of an object, i.e. the average x and y coordinates of a cell.
 
 
-*Complex Coordinate*
+- *Complex Coordinate*
 : A complex coordinate function reduces each point in a contour from 2D ```(x,y)``` to 1D ```(x + yi)```. Here, the function calculates ```(x - cx) + i * (y - cy)```, normalizing the points in a cell to the centroid ```(cx, cy)```. The output is a list of complex numbers.
 
 
-*Centroid Distance Function (CDF)*
+- *Centroid Distance Function (CDF)*
 : CDF is the distance from the centroid of an object to a point on its boundary. The output for each cell is a list of numpy floats that describe the shape's geometry relative to its center.
 
 
-*Tangent Angles*
+- *Tangent Angles*
 : This function finds the angle of the tangent at each point in the contour based on the previous point. Output for each cell is a list of numpy floats between -2pi and 2pi.
 
 
