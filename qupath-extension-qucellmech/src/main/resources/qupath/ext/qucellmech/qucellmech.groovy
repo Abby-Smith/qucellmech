@@ -9,7 +9,6 @@
 import static qupath.lib.scripting.QP.*
 import qupath.lib.regions.ImagePlane
 
-import qupath.ext.biop.cellpose.Cellpose2D
 import qupath.lib.analysis.features.ObjectMeasurements
 import qupath.opencv.ops.ImageOps
 
@@ -69,6 +68,19 @@ if (!csvCleanFolder.exists()) {
 // =====================================================
 
 if (runCellpose) {
+    // Dynamically load Cellpose2D only when actually needed, so that users
+    // without the qupath-extension-cellpose installed can still run this
+    // script with runCellpose = false (importing pre-existing GeoJSON instead).
+    def cellposeClass
+    try {
+        cellposeClass = Class.forName("qupath.ext.biop.cellpose.Cellpose2D")
+    } catch (ClassNotFoundException e) {
+        println("ERROR: qupath-extension-cellpose does not appear to be installed, but runCellpose = true.")
+        println("Install the extension, or set runCellpose = false to import pre-existing GeoJSON instead.")
+        return
+    }
+    print("running Cellpose")
+
     // Loop through all selected image entries in the project
     for (entry in project.getImageList().findAll { selectedImageNames.contains(it.getImageName()) }) {
         // Open each image
@@ -97,16 +109,18 @@ if (runCellpose) {
         def stains = imageData.getColorDeconvolutionStains()
         println(stains)
 
-        // Create a Cellpose detector for nuclei
-        def cellpose_nuc = Cellpose2D.builder('nuclei')
-                .preprocess(
-                    ImageOps.Channels.deconvolve(stains),
-                    ImageOps.Channels.extract(0)   // Channel 0 = Hematoxylin
-                )
-                .pixelSize(0.3)
-                .diameter(10)
-                .build()
-        
+        // Get the static 'builder' method via reflection instead of a compile-time class reference
+        // This builds the cellpose nucleus detection model.
+        def builder = cellposeClass.getMethod("builder", String.class).invoke(null, "nuclei")
+
+        builder = builder.preprocess(
+            ImageOps.Channels.deconvolve(stains),
+            ImageOps.Channels.extract(0)
+        )
+        builder = builder.pixelSize(0.3)
+        builder = builder.diameter(10)
+        def cellpose_nuc = builder.build()
+
         // this is where we actually run cellpose!
         cellpose_nuc.detectObjects(imageData, [fullAnnotation])
 
