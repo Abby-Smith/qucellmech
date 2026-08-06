@@ -30,7 +30,7 @@ A QuPath extension that integrates Cellpose (automated cell segmentation) and Py
   - ```PROJECT_DIRECTORY/output/geojson```: if running Cellpose, generates GeoJSON files of detection coordinates
   - ```PROJECT_DIRECTORY/output/csv```: Raw CSV files of all features processed by Pycellmech
   - ```PROJECT_DIRECTORY/output/csv_clean```: Clean CSV files containing all scalar-value features from Pycellmech
-- In QuPath, detection objects (cells) that display PyCellmech scalar-value features when clicked. You may have to close and reopen the image viewer, but not QuPath itself, in order to see the detections after Qucellmech first runs. 
+- In QuPath, detection objects (cells) that display PyCellmech scalar-value features when clicked. You may have to close and reopen the image viewer (click DON'T SAVE when you exit the image), in order to see the detections after Qucellmech runs. 
 
 Note: since the full pipeline is computationally expensive (and slow), for slides with many hundreds of cells, it is recommended to run at most 50 images at a time.
 
